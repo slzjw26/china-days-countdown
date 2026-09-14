@@ -1,0 +1,101 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "china-days-countdown",
+  "version": "0.1.0",
+  "title": "China Days Countdown",
+  "description": "Count calendar days or Chinese working days until your events, with holiday and make-up workday support.",
+  "icon": "icon.png",
+  "author": "ksher",
+  "license": "MIT",
+  "platforms": [
+    "macOS"
+  ],
+  "categories": [
+    "Productivity"
+  ],
+  "keywords": [
+    "countdown",
+    "china",
+    "holiday",
+    "workdays",
+    "倒计时",
+    "工作日"
+  ],
+  "commands": [
+    {
+      "name": "countdowns",
+      "title": "查看倒计时",
+      "description": "查看、编辑和管理多个倒数事件",
+      "mode": "view"
+    },
+    {
+      "name": "create-countdown",
+      "title": "创建倒计时",
+      "description": "添加自然日或中国工作日倒计时",
+      "mode": "view"
+    },
+    {
+      "name": "menu-bar",
+      "title": "倒计时菜单栏",
+      "description": "显示最近或指定事件的剩余天数，运行一次即可启用",
+      "mode": "menu-bar",
+      "interval": "5m"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "timeZone",
+      "title": "日期时区",
+      "description": "确定今天的日历日期；中国工作日历在两种时区下都按中国节假日规则计算",
+      "type": "dropdown",
+      "required": true,
+      "default": "Asia/Shanghai",
+      "data": [
+        {
+          "title": "中国时间（Asia/Shanghai）",
+          "value": "Asia/Shanghai"
+        },
+        {
+          "title": "系统时区",
+          "value": "system"
+        }
+      ]
+    }
+  ],
+  "scripts": {
+    "dev": "ray develop",
+    "build": "ray build -e dist -o dist",
+    "lint": "eslint . && prettier --check . && tsc --noEmit",
+    "lint:raycast": "ray lint",
+    "format": "prettier --write .",
+    "test": "tsx --test tests/*.test.ts tests/*.test.mjs",
+    "check": "npm test && npm run lint && npm run build",
+    "release:check": "node scripts/release.mjs check",
+    "release:package": "node scripts/release.mjs package"
+  },
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "dependencies": {
+    "@raycast/api": "2.3.1",
+    "react": "19.0.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "2.2.0",
+    "@types/node": "22.19.17",
+    "@types/react": "19.0.10",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "tsx": "4.23.13",
+    "typescript": "^5.9.0"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/slzjw26/china-days-countdown.git"
+  },
+  "homepage": "https://github.com/slzjw26/china-days-countdown#readme",
+  "bugs": {
+    "url": "https://github.com/slzjw26/china-days-countdown/issues"
+  }
+}

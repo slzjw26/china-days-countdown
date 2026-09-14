@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.release/
+.env
+.env.*
+docs/superpowers/
+docs/verification.md
+docs/commit-files.txt
