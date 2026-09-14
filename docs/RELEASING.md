@@ -15,13 +15,16 @@
 
 ## 发布步骤
 
-1. 确认改动已经审查，`main` 工作区干净，并完成 Raycast 手工验收。
+1. 确认功能改动已合入 `main` 并完成 Raycast 手工验收。在干净工作区同步最新 `main`，然后创建发布准备分支。
 2. 更新版本，例如 `npm version 0.1.1 --no-git-tag-version`。该命令同时更新 package 和 lockfile，但不会自动提交或打标签。
 3. 将 `CHANGELOG.md` 的待发布内容整理成 `## [0.1.1] - YYYY-MM-DD`，保留空的 `Unreleased`。说明新增行为、修复、已知限制，以及任何数据兼容性变化。
-4. 执行 `npm run check` 和 `npm run release:check -- v0.1.1`，审查并提交版本文件。推送 `main`，等待 CI 成功。
-5. 在同一提交上打附注标签并推送：
+4. 执行 `npm run check` 和 `npm run release:check -- v0.1.1`，审查并提交版本文件。推送准备分支并创建 PR；`check` 通过、分支与最新 `main` 同步且讨论全部解决后，以 Squash 合入。不要直接推送 `main`。
+5. 回到本地 `main`，快进同步后确认它对应刚才的 Squash 合并提交。在该提交上打附注标签并推送：
 
    ```bash
+   git switch main
+   git pull --ff-only origin main
+   npm run release:check -- v0.1.1
    git tag -a v0.1.1 -m "Release v0.1.1"
    git push origin v0.1.1
    ```
@@ -30,9 +33,11 @@
 
 本地验证打包可在已有标签的对应提交上运行 `npm run release:package -- v0.1.1`。产物在 `.release/`，该目录不提交 Git。打包工具要求当前 HEAD 与标签指向相同提交，并核查提交内的版本及更新记录。
 
+仓库禁止修改或删除 `v*` 标签，仍允许创建新版本标签。已开启不可变 Release：后续发布的附件和关联标签会被锁定，标题与发布说明仍可编辑。现有发布命令先创建草稿、上传附件，再正式发布，与这一设置兼容。开启设置前发布的 `v0.1.0` 附件不会自动变为不可变，但其标签已受 `v*` 规则保护。
+
 ## 发布失败
 
-- 测试或版本校验失败：修复原因，确认标签没有对外发布。不要静默移动已公开的版本标签；必要时使用新的修订版本。
+- 测试或版本校验失败：若需要修改代码，修复后通过 PR 合入，再使用新的修订版本标签；已推送的 `v*` 标签不能移动或删除。仅网络等临时故障且无需改动源码时，可以重跑原工作流。
 - GitHub Actions 权限被组织策略限制：核对仓库 Actions 设置是否允许 workflow 申请 `contents: write`。无需把个人 token 写进仓库。
 - 工作流重复执行而 Release 已存在：发布会拒绝覆盖，先核查已有 Release 及资产。公开资产需要更正时，优先发布新修订版本并解释原因。
 - 安装问题：保留诊断信息与版本号，在本地重现；不要把个人事件或备注放进日志、Issue 或 Release notes。
