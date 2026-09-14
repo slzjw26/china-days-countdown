@@ -5,6 +5,13 @@ updates:
     schedule:
       interval: monthly
     open-pull-requests-limit: 3
+    ignore:
+      # TypeScript 主版本升级需先核对 Raycast SDK 与 ESLint 配置的兼容范围。
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      # Node 类型主版本随 .nvmrc 中的运行时版本手工升级。
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
