@@ -77,7 +77,7 @@
     "node": ">=22.22.2"
   },
   "dependencies": {
-    "@raycast/api": "2.3.1",
+    "@raycast/api": "2.5.3",
     "react": "19.3.0"
   },
   "devDependencies": {
